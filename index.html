@@ -46,4 +46,82 @@
     </footer>
 
 </body>
+<style>
+  /* 1. 悬浮球的基础样式 */
+  #laoying-float-ball {
+    position: fixed; /* 固定在屏幕上，不随滚动条滚动 */
+    bottom: 50px;    /* 距离底部 50 像素 */
+    right: 50px;     /* 距离右侧 50 像素 */
+    width: 100px;    /* 圆球宽度 */
+    height: 100px;   /* 圆球高度 */
+    background-color: #ff4500; /* 橙红色背景，非常醒目 */
+    border-radius: 50%; /* 变成完美的圆 */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* 增加阴影，更有立体感 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;   /* 确保它在所有内容的最上面 */
+    cursor: pointer; /* 鼠标悬停时变成手形 */
+    transition: all 0.3s ease; /* 增加平滑过渡效果 */
+    
+    /* 2. 增加慢速旋转动画 */
+    animation: ballRotate 10s linear infinite; /* 10秒转一圈，无限循环 */
+  }
+
+  /* 定义旋转动画 */
+  @keyframes ballRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* 3. 圆球上的文字样式 */
+  #laoying-float-ball .ball-text {
+    color: white;    /* 文字颜色为白色 */
+    font-size: 16px; /* 文字大小 */
+    font-weight: bold; /* 文字加粗 */
+    text-align: center;
+    line-height: 1.2;
+    pointer-events: none; /* 确保鼠标事件能穿透文字，触发圆球的hover */
+  }
+
+  /* 4. 二维码图片的初始样式（隐藏） */
+  #laoying-qrcode {
+    position: absolute; /* 相对于圆球定位 */
+    bottom: 110%;    /* 出现在圆球上方 10% 的位置 */
+    right: 0;        /* 和圆球右侧对齐 */
+    width: 150px;    /* 二维码宽度 */
+    height: 150px;   /* 二维码高度 */
+    background-color: white; /* 白色背景 */
+    border: 2px solid #ff4500; /* 橙红色边框 */
+    border-radius: 10px; /* 圆角边框 */
+    padding: 10px;   /* 内边距 */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* 增加阴影 */
+    
+    /* 初始状态：隐藏且透明 */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px); /* 稍微往下偏移，增加浮现感 */
+    transition: all 0.4s ease; /* 增加平滑浮现效果 */
+  }
+
+  /* 5. 鼠标悬停（Hover）时的交互效果 */
+  #laoying-float-ball:hover {
+    background-color: #32cd32; /* 悬停时变成绿色，代表体彩的希望 */
+    animation-play-state: paused; /* 悬停时停止旋转，方便扫码 */
+    transform: scale(1.1); /* 稍微放大，增加互动感 */
+  }
+
+  /* 6. 鼠标悬停时显示二维码 */
+  #laoying-float-ball:hover #laoying-qrcode {
+    opacity: 1;       /* 变成完全不透明 */
+    visibility: visible; /* 变成可见 */
+    transform: translateY(0); /* 回到原位，完成浮现动画 */
+  }
+</style>
+
+<div id="laoying-float-ball">
+  <div class="ball-text">体彩<br>老鹰</div>
+  
+  <img id="laoying-qrcode" src="qrcode.jpg" alt="体彩老鹰二维码">
+</div>
 </html>
