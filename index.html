@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>老鹰游记 - 首页</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .banner-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url('banner.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <nav class="fixed w-full z-50 bg-white/70 backdrop-blur-md border-b border-stone-200">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold tracking-widest text-stone-900">老鹰游记</a>
+            <div class="space-x-8 font-medium">
+                <a href="shanghai.html" class="hover:text-amber-700 transition">上海</a>
+                <a href="wuyishan.html" class="hover:text-amber-700 transition">武夷山</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="banner-bg h-screen w-full flex items-center justify-center">
+        <div class="text-center text-white space-y-4">
+            <h1 class="text-5xl md:text-7xl font-serif tracking-[0.2em] drop-shadow-lg">老鹰游记</h1>
+            <p class="text-lg md:text-xl font-light tracking-widest opacity-90">记录山川，也记录陪我看山川的人</p>
+        </div>
+    </div>
+
+    <section class="max-w-3xl mx-auto py-24 px-6 text-center">
+        <h3 class="text-3xl mb-6 font-serif tracking-widest text-stone-900">序言</h3>
+        <p class="leading-loose text-lg text-gray-700">
+            有人说，世界是一本书，不旅行的人只读了其中一页。<br>
+            这本《老鹰游记》不求惊艳世界，只为留存那些微风拂面的瞬间。<br>
+            点开上方的地点，陪我重温那些走过的路。
+        </p>
+    </section>
+
+    <footer class="py-12 text-center text-stone-400 text-sm border-t border-stone-100">
+        <p>© 2026 老鹰游记 | 专属家人与朋友</p>
+    </footer>
+
+</body>
+</html>
