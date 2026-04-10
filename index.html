@@ -173,301 +173,287 @@
     };
   })();
 </script>
-   <style>
-  /* 1. 顶部触发：更加隐蔽、内敛 */
+  <style>
+  /* 1. 顶部触发按钮 */
   #egg-trigger {
     position: fixed;
-    top: 30px; /* 稍微下移一点，更符合视线平衡 */
+    top: 30px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 99999; 
-    color: rgba(255, 255, 255, 0.35); /* 初始透明度更低 */
+    color: rgba(255, 255, 255, 0.5);
     font-size: 14px;
-    letter-spacing: 4px; /* 字间距加大，更有呼吸感 */
+    letter-spacing: 4px;
     cursor: pointer !important;
-    padding: 10px 30px;
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 增加弹出回弹感 */
+    transition: all 0.3s;
     user-select: none;
-    font-family: "Microsoft YaHei", sans-serif;
   }
-  #egg-trigger:hover {
-    color: #fff;
-    text-shadow: 0 0 15px rgba(212, 175, 55, 0.8); /* 金色呼吸光圈 */
-    transform: translateX(-50%) scale(1.03);
-  }
+  #egg-trigger:hover { color: #fff; text-shadow: 0 0 10px #d4af37; }
 
-  /* 2. 遮罩层：深度磨砂与全黑背景 */
+  /* 2. 遮罩层：更透亮的磨砂感 */
   #wheel-overlay {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.95); /* 背景更黑，视觉中心更突出 */
-    backdrop-filter: blur(20px); /* 磨砂玻璃效果更重 */
-    display: none; /* 初始隐藏 */
+    background: rgba(0, 0, 0, 0.7); /* 背景稍微调淡 */
+    backdrop-filter: blur(20px);
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 100000;
     flex-direction: column;
-    opacity: 0; /* 初始透明 */
-    transition: opacity 0.5s ease;
+    opacity: 0;
+    transition: opacity 0.6s ease;
   }
   #wheel-overlay.show { opacity: 1; }
 
-  /* 3. 转盘主体 */
+  /* 3. 转盘容器：淡色半透明 */
+  .wheel-wrap {
+    position: relative;
+    width: 400px;
+    height: 400px;
+  }
+
   .wheel-container {
     position: relative;
-    width: 440px; /* 再次放大，文字更有空间 */
-    height: 440px;
-    border: 5px solid #d4af37; /* 香槟金边框 */
+    width: 100%;
+    height: 100%;
+    /* 💡 修改：淡色半透明背景 */
+    background: rgba(255, 255, 255, 0.1); 
+    border: 2px solid rgba(212, 175, 55, 0.5);
     border-radius: 50%;
-    overflow: hidden;
-    /* 优化减速曲线，让最后的减速过程极其缓慢而有悬念 */
-    transition: transform 6s cubic-bezier(0.15, 0, 0.05, 1);
-    background: #0a0a0a;
-    box-shadow: 0 0 100px rgba(212, 175, 55, 0.15); /* 深度金色光晕 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 7s cubic-bezier(0.15, 0, 0, 1);
+    box-shadow: 0 0 50px rgba(212, 175, 55, 0.1);
   }
 
-  /* 扇区分割线 */
-  .wheel-part {
+  /* 💡 修改：盘面中心文字 */
+  .wheel-center-text {
+    color: #d4af37;
+    font-size: 20px;
+    letter-spacing: 5px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  }
+
+  /* 盘面装饰细线（保留一点旋转感） */
+  .wheel-line {
     position: absolute;
-    width: 50%;
-    height: 1px;
-    background: rgba(212, 175, 55, 0.12);
+    width: 100%; height: 1px;
+    background: rgba(212, 175, 55, 0.1);
     top: 50%;
-    left: 50%;
-    transform-origin: left center;
-  }
-
-  /* 地点文字：更有质感 */
-  .wheel-label {
-    position: absolute;
-    width: 170px;
-    left: 30px;
-    top: -12px;
-    color: rgba(212, 175, 55, 0.7); /* 初始半透明金 */
-    font-size: 13px;
-    text-align: right;
-    letter-spacing: 1px;
-    transition: color 0.3s;
   }
 
   /* 4. 指针 */
   #wheel-pointer {
     position: absolute;
-    top: -10px;
-    left: 50%;
+    top: -10px; left: 50%;
     transform: translateX(-50%);
     width: 0; height: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-top: 40px solid #d4af37;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 30px solid #d4af37;
     z-index: 100001;
-    transition: transform 0.1s; /* 为指针跳动预留 */
   }
 
-  /* 5. 开启按钮 */
+  /* 5. 按钮 */
   #spin-btn {
-    margin-top: 60px;
+    margin-top: 40px;
     background: transparent;
     border: 1px solid #d4af37;
     color: #d4af37;
-    padding: 12px 70px;
-    font-size: 19px;
+    padding: 10px 50px;
+    font-size: 16px;
     cursor: pointer;
-    letter-spacing: 6px;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 100002;
+    letter-spacing: 5px;
+    transition: all 0.3s;
   }
-  #spin-btn:hover {
-    background: #d4af37;
-    color: #000;
-    box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
-    transform: scale(1.05);
-  }
+  #spin-btn:hover:not(:disabled) { background: #d4af37; color: #000; }
 
-  /* 6. 关闭图标 */
-  #close-wheel {
-    position: absolute;
-    top: 40px;
-    right: 50px;
-    color: #fff;
-    font-size: 50px;
-    cursor: pointer;
-    opacity: 0.5;
-    transition: opacity 0.3s, transform 0.3s;
+  /* 💡 修改：转盘下方浮现的名言 */
+  #quote-display {
+    margin-top: 30px;
+    color: #aaa;
+    font-size: 14px;
+    font-style: italic;
+    max-width: 80%;
+    text-align: center;
+    line-height: 1.6;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 2s ease; /* 缓慢浮现 */
   }
-  #close-wheel:hover { opacity: 1; transform: rotate(90deg); }
+  #quote-display.reveal { opacity: 1; transform: translateY(0); }
 
-  /* ============================================= */
-  /* 7. 新增深度彩蛋：结果展示卡片 */
-  /* ============================================= -->
+  /* 6. 结果展示卡片 */
   #result-card {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.6);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 100003;
+    z-index: 100005;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.5s;
   }
   #result-card.show { opacity: 1; display: flex; }
-
   .result-content {
-    background: linear-gradient(135deg, #222 0%, #000 100%);
-    border: 2px solid #d4af37;
-    border-radius: 20px;
-    padding: 50px;
-    width: 350px;
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
     text-align: center;
-    box-shadow: 0 0 100px rgba(212, 175, 55, 0.5); /* 强烈的胜利光晕 */
-    transform: translateY(50px) scale(0.8); /* 初始下移、缩小，准备弹出 */
-    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Q弹弹出动画 */
-  }
-  #result-card.show .result-content { transform: translateY(0) scale(1); }
-
-  .result-header {
-    color: rgba(255,255,255,0.6);
-    font-size: 14px;
-    letter-spacing: 4px;
-    margin-bottom: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
   }
 
-  .result-destination {
-    color: #d4af37;
-    font-size: 32px; /* 超大标题 */
-    font-weight: bold;
-    letter-spacing: 3px;
-    text-shadow: 0 0 20px rgba(212, 175, 55, 0.8); /* 文字发光 */
-    margin-bottom: 40px;
-    background: linear-gradient(135deg, #fff 0%, #d4af37 60%, #fff 100%); /* 渐变色文字 */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  /* 金色粒子雨容器 */
+  #celebration-canvas {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 100004;
   }
-
-  #confim-btn {
-    background: #d4af37;
-    color: #000;
-    border: none;
-    padding: 10px 40px;
-    font-size: 16px;
-    border-radius: 30px;
-    cursor: pointer;
-    letter-spacing: 2px;
-    transition: all 0.3s;
-  }
-  #confim-btn:hover { box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); transform: translateY(-2px); }
-
 </style>
 
 <div id="egg-trigger">—— 下次去哪里游历 ——</div>
 
 <div id="wheel-overlay">
-  <div id="close-wheel">×</div>
-  <div id="wheel-pointer"></div>
-  <div class="wheel-container" id="main-wheel">
+  <div id="close-wheel" style="position:absolute; top:30px; right:40px; color:#fff; font-size:40px; cursor:pointer; opacity:0.3;">×</div>
+  <div class="wheel-wrap">
+    <div id="wheel-pointer"></div>
+    <div class="wheel-container" id="main-wheel">
+      <div class="wheel-center-text">下 次 去<br>哪 里 游 历</div>
+      <div class="wheel-line" style="transform: rotate(45deg)"></div>
+      <div class="wheel-line" style="transform: rotate(90deg)"></div>
+      <div class="wheel-line" style="transform: rotate(135deg)"></div>
     </div>
+  </div>
+  
+  <div id="quote-display"></div>
+  
   <button id="spin-btn">开启航程</button>
 </div>
 
+<canvas id="celebration-canvas"></canvas>
+
 <div id="result-card">
   <div class="result-content">
-    <div class="result-header">星辰指引·下一站</div>
-    <div class="result-destination" id="final-dest">云南·彩云之南</div>
-    <button id="confim-btn">启程</button>
+    <div style="color:#999; font-size:12px; letter-spacing:3px; margin-bottom:15px;">DESTINATION</div>
+    <div id="final-dest" style="color:#d4af37; font-size:32px; font-weight:bold; margin-bottom:30px;"></div>
+    <button id="confim-btn" style="background:#d4af37; border:none; padding:10px 40px; cursor:pointer; border-radius:5px; color:#000; font-weight:bold;">启程</button>
   </div>
 </div>
 
 <script>
-  (function() {
-    document.addEventListener('DOMContentLoaded', function() {
-      // 💡 Owen 亲自选定的 12 个目的地
-      const destinations = [
-        "北京·故宫博物院", "冰岛·雷克雅未克", "法国·巴黎", 
-        "甘肃·敦煌", "长江·游轮", "内蒙古·呼伦贝尔", 
-        "云南·彩云之南", "江苏·扬州", "浙江·舟山", 
-        "浙江·安吉", "湖州·莫干山", "桐乡·乌镇"
-      ];
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    const destinations = ["北京·故宫博物院", "冰岛·雷克雅未克", "法国·巴黎", "甘肃·敦煌", "长江·游轮", "内蒙古·呼伦贝尔", "云南·彩云之南", "江苏·扬州", "浙江·舟山", "浙江·安吉", "湖州·莫干山", "桐乡·乌镇"];
+    const quotes = [
+      "“人的一生中，至少要有两次冲动，一次为奋不顾身的爱情，一次为说走就走的旅行。”",
+      "“世界是一本书，而不旅行的人只读了其中的一页。”",
+      "“真正的发现之旅不在于寻找新的风景，而在于拥有新的眼光。”",
+      "“旅行是一场向外的探索，更是一次向内的回归。”"
+    ];
+
+    const wheel = document.getElementById('main-wheel');
+    const overlay = document.getElementById('wheel-overlay');
+    const spinBtn = document.getElementById('spin-btn');
+    const quoteDisplay = document.getElementById('quote-display');
+    const finalDest = document.getElementById('final-dest');
+    const resultCard = document.getElementById('result-card');
+    const canvas = document.getElementById('celebration-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let rotation = 0;
+    let spinning = false;
+
+    // 窗口尺寸
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // 粒子效果类
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height - canvas.height;
+        this.size = Math.random() * 5 + 2;
+        this.speed = Math.random() * 3 + 2;
+        this.color = `rgba(212, 175, 55, ${Math.random()})`;
+      }
+      update() {
+        this.y += this.speed;
+        if (this.y > canvas.height) this.reset();
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    const particles = Array.from({ length: 50 }, () => new Particle());
+    let animationId;
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      animationId = requestAnimationFrame(animateParticles);
+    }
+
+    document.getElementById('egg-trigger').onclick = () => {
+      overlay.style.display = 'flex';
+      setTimeout(() => overlay.classList.add('show'), 10);
+    };
+
+    document.getElementById('close-wheel').onclick = () => {
+      overlay.classList.remove('show');
+      setTimeout(() => overlay.style.display = 'none', 500);
+      quoteDisplay.classList.remove('reveal');
+      cancelAnimationFrame(animationId);
+      ctx.clearRect(0,0,canvas.width, canvas.height);
+    };
+
+    spinBtn.onclick = () => {
+      if (spinning) return;
+      spinning = true;
+      spinBtn.disabled = true;
+      quoteDisplay.classList.remove('reveal');
       
-      const wheel = document.getElementById('main-wheel');
-      const overlay = document.getElementById('wheel-overlay');
-      const trigger = document.getElementById('egg-trigger');
-      const closeBtn = document.getElementById('close-wheel');
-      const spinBtn = document.getElementById('spin-btn');
-      
-      const resultCard = document.getElementById('result-card');
-      const finalDest = document.getElementById('final-dest');
-      const confimBtn = document.getElementById('confim-btn');
+      const extra = Math.floor(Math.random() * 360);
+      rotation += (360 * 8) + extra;
+      wheel.style.transform = `rotate(${rotation}deg)`;
 
-      // 初始化：根据 12 个地点自动计算扇区角度 (360/12 = 30度)
-      destinations.forEach((city, index) => {
-        const angle = (360 / destinations.length) * index;
-        const part = document.createElement('div');
-        part.className = 'wheel-part';
-        // 文字居中调整
-        part.style.transform = `rotate(${angle + (360/destinations.length/2)}deg)`;
-        part.innerHTML = `<div class="wheel-label">${city}</div>`;
-        wheel.appendChild(part);
-      });
-
-      // 打开/关闭转盘
-      trigger.addEventListener('click', () => { 
-        overlay.style.display = 'flex'; 
-        setTimeout(() => overlay.classList.add('show'), 10); // 增加淡入动画
-      });
-      closeBtn.onclick = () => { 
-        overlay.classList.remove('show');
-        setTimeout(() => overlay.style.display = 'none', 500);
-      };
-
-      let currentRotation = 0;
-      let isSpinning = false;
-
-      spinBtn.onclick = () => {
-        if (isSpinning) return;
-        isSpinning = true;
-        spinBtn.disabled = true;
-        spinBtn.innerText = "正在寻觅...";
-        spinBtn.style.opacity = '0.5';
+      setTimeout(() => {
+        // 1. 抽取结果
+        const index = Math.floor(Math.random() * destinations.length);
+        finalDest.innerText = destinations[index];
+        quoteDisplay.innerText = quotes[Math.floor(Math.random() * quotes.length)];
         
-        // 增加随机性：多转几圈再随机落点
-        const extraDegree = Math.floor(Math.random() * 360);
-        currentRotation += (360 * 10) + extraDegree; 
-        
-        wheel.style.transform = `rotate(${currentRotation}deg)`;
-
-        // 动画结束后的处理
+        // 2. 需求3：开始庆祝和显示名言
+        animateParticles();
         setTimeout(() => {
-          isSpinning = false;
-          spinBtn.style.opacity = '1';
-          
-          // 计算结果
-          const actualDegree = currentRotation % 360;
-          const index = Math.floor((360 - actualDegree) / (360 / destinations.length)) % destinations.length;
-          const selectedDest = destinations[index];
+          quoteDisplay.classList.add('reveal');
+          resultCard.style.display = 'flex';
+          setTimeout(() => resultCard.classList.add('show'), 10);
+        }, 1000);
 
-          // 💡 深度加深：取代 alert，展示高逼格卡片
-          setTimeout(() => {
-            // 1. 设置结果文字
-            finalDest.innerText = selectedDest;
-            // 2. 显示卡片
-            resultCard.style.display = 'flex';
-            setTimeout(() => resultCard.classList.add('show'), 10);
-            
-            // 3. 重置按钮
-            spinBtn.disabled = false;
-            spinBtn.innerText = "再次开启";
-          }, 500); // 停下后静止半秒，增加仪式感
+        spinning = false;
+        spinBtn.disabled = false;
+      }, 7100);
+    };
 
-        }, 6100); // 对应CSS中的旋转时间
-      };
-
-      // 关闭结果卡片
-      confimBtn.onclick = () => {
-        resultCard.classList.remove('show');
-        setTimeout(() => resultCard.style.display = 'none', 400);
-      };
-    });
-  })();
+    document.getElementById('confim-btn').onclick = () => {
+      resultCard.classList.remove('show');
+      setTimeout(() => resultCard.style.display = 'none', 500);
+    };
+  });
+})();
 </script>
 </html>
