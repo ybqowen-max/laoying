@@ -11,6 +11,59 @@
             background-size: cover;
             background-position: center;
         }
+        /* 小鸟容器：控制飞行的轨迹 */
+    .bird-container {
+      position: absolute;
+      top: 25%; 
+      left: -10%;
+      z-index: 20;
+      animation: fly-across 18s linear infinite;
+    }
+
+    /* 小鸟身体：大小比普通鼠标大一圈 */
+    .bird {
+      width: 50px; 
+      height: 25px;
+      position: relative;
+    }
+
+    /* 翅膀样式 */
+    .wing {
+      position: absolute;
+      width: 25px;
+      height: 12px;
+      background: #2d3436; /* 深色老鹰感 */
+      border-radius: 50% 50% 0 0;
+    }
+
+    .wing-left {
+      left: 0;
+      transform-origin: bottom right;
+      animation: flap-left 0.7s ease-in-out infinite;
+    }
+
+    .wing-right {
+      right: 0;
+      transform-origin: bottom left;
+      animation: flap-right 0.7s ease-in-out infinite;
+    }
+
+    /* 动画：扇动翅膀 */
+    @keyframes flap-left {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-40deg); }
+    }
+    @keyframes flap-right {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(40deg); }
+    }
+
+    /* 动画：横穿屏幕 */
+    @keyframes fly-across {
+      0% { transform: translateX(-10vw) translateY(0px); }
+      50% { transform: translateX(55vw) translateY(-30px); }
+      100% { transform: translateX(110vw) translateY(0px); }
+    }
     </style>
 </head>
 <body class="bg-stone-50 text-stone-800">
@@ -25,7 +78,13 @@
         </div>
     </nav>
 
-    <div class="banner-bg h-screen flex items-start justify-center pt-32">
+    <div class="banner-bg h-screen flex items-start justify-center pt-32 relative overflow-hidden">
+        <div class="bird-container">
+  <div class="bird">
+    <div class="wing wing-left"></div>
+    <div class="wing wing-right"></div>
+  </div>
+</div>
         <div class="text-center text-white space-y-4">
             <h1 class="text-5xl md:text-7xl font-serif tracking-[0.2em] drop-shadow-lg">老鹰游记</h1>
             <p class="text-lg md:text-xl font-light tracking-widest opacity-90">记录山川，也记录陪我看山川的人</p>
